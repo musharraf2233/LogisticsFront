@@ -1,0 +1,263 @@
+<div class="container my-4">
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">Shipment Form</h4>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="shipmentForm" (ngSubmit)="onSubmit()">
+        <!-- Origin -->
+        <div class="mb-3">
+          <label for="origin" class="form-label">Origin</label>
+          <input
+            type="text"
+            id="origin"
+            class="form-control"
+            formControlName="origin"
+            placeholder="Enter origin"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              shipmentForm.get('origin')?.touched &&
+              shipmentForm.get('origin')?.invalid
+            "
+          >
+            Origin is required.
+          </div>
+        </div>
+
+        <!-- Destination -->
+        <div class="mb-3">
+          <label for="destination" class="form-label">Destination</label>
+          <input
+            type="text"
+            id="destination"
+            class="form-control"
+            formControlName="destination"
+            placeholder="Enter destination"
+          />
+        </div>
+
+        <!-- Status -->
+        <div class="mb-4">
+          <label for="status" class="form-label">Status</label>
+          <select
+            class="form-select"
+            formControlName="status"
+            id="status"
+            required
+          >
+            <option value="BOOKED">BOOKED</option>
+            <option value="DISPATCHED">DISPATCHED</option>
+            <option value="IN_TRANSIST">IN_TRANSIST</option>
+            <option value="DELIVERED">DELIVERED</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="status" class="form-label">Trans</label>
+          <select
+            class="form-select"
+            formControlName="transport"
+            id="transport"
+            required
+          >
+            <option value="AIR">AIR</option>
+            <option value="ROAD">ROAD</option>
+            <option value="SEA">SEA</option>
+          </select>
+        </div>
+
+        <!-- Goods List -->
+        <div formArrayName="goodsList">
+          <h5 class="text-primary mb-3">Goods List</h5>
+          <div
+            *ngFor="let goods of goodsList.controls; let i = index"
+            [formGroupName]="i"
+            class="card mb-3 shadow-sm"
+          >
+            <div class="card-body">
+              <h6 class="card-title text-secondary">Goods #{{ i + 1 }}</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Enter name"
+                  />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="description"
+                    placeholder="Description"
+                    (input)="searchHsCodeByDescription($event, i)"
+                  />
+                  <ul
+                    *ngIf="hsCodeSuggestions[i]!.length > 0"
+                    class="list-group mt-1 index"
+                  >
+                    <li
+                      *ngFor="let suggestion of hsCodeSuggestions[i]"
+                      class="list-group-item list-group-item-action"
+                      (click)="selectHsCode(suggestion, i)"
+                      style="cursor: pointer"
+                    >
+                      {{ suggestion.commodity_fullname_english }} ({{
+                        suggestion.commodity_code
+                      }})
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Quantity</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="quantity"
+                    min="1"
+                  />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Amount</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="amount"
+                    step="0.01"
+                  />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Length</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="length"
+                  />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Width</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="width"
+                  />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Heigth</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="height"
+                  />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Weight (kg)</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="weight"
+                    step="0.1"
+                  />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">HS Code</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="hsCode"
+                  />
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  (click)="removeGoods(i)"
+                  *ngIf="goodsList.length > 1"
+                >
+                  Remove Goods
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Goods Button -->
+        <div class="mb-3">
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+            (click)="addGoods()"
+          >
+            + Add More Goods
+          </button>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success btn-lg">
+            Submit Shipment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="container h-50">
+    <h3>Search HS Code by Commodity Name</h3>
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="searchKeyword"
+        (input)="searchHsCode()"
+        placeholder="Enter commodity name"
+        class="form-control"
+      />
+    </div>
+
+    <div *ngIf="loading" class="text-info">Loading results...</div>
+
+    <table *ngIf="hsCodeResults.length > 0" class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Code</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hsCode of hsCodeResults">
+          <td>{{ hsCode.commodity_code_short }}</td>
+          <td>{{ hsCode.section_code }}</td>
+          <td>{{ hsCode.commodity_code }}</td>
+          <td>{{ hsCode.commodity_fullname_english }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div
+      *ngIf="
+        !loading && hsCodeResults.length === 0 && searchKeyword.trim() !== ''
+      "
+      class="text-warning"
+    >
+      No HS Code results found.
+    </div>
+  </div>
+</div>

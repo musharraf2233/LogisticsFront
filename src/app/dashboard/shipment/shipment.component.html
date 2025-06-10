@@ -1,0 +1,112 @@
+<div class="container my-4">
+  <h3>Shipment List</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Status</th>
+        <th>Transport</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shipment of shipments">
+        <td>{{ shipment.id }}</td>
+        <td>{{ shipment.origin }}</td>
+        <td>{{ shipment.destination }}</td>
+        <td>{{ shipment.status }}</td>
+        <td>{{ shipment.transport }}</td>
+        <td>
+          <button
+            class="btn btn-primary btn-sm me-2"
+            (click)="selectShipment(shipment)"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="deleteShipment(shipment.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="isEditing" class="card mt-4 p-3">
+    <h4>Edit Shipment (ID: {{ selectedShipment?.id }})</h4>
+    <form [formGroup]="shipmentForm" (ngSubmit)="updateShipment()">
+      <div class="mb-3">
+        <label for="origin" class="form-label">Origin</label>
+        <input
+          id="origin"
+          type="text"
+          class="form-control"
+          formControlName="origin"
+        />
+        <div
+          *ngIf="
+            shipmentForm.get('origin')?.invalid &&
+            shipmentForm.get('origin')?.touched
+          "
+          class="text-danger"
+        >
+          Origin is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="destination" class="form-label">Destination</label>
+        <input
+          id="destination"
+          type="text"
+          class="form-control"
+          formControlName="destination"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select
+          id="status"
+          class="form-select"
+          formControlName="status"
+          required
+        >
+          <option value="BOOKED">BOOKED</option>
+          <option value="DISPATCHED">DISPATCHED</option>
+          <option value="IN_TRANSIST">IN_TRANSIST</option>
+          <option value="DELIVERED">DELIVERED</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="transport" class="form-label">Transport</label>
+        <select
+          id="transport"
+          class="form-select"
+          formControlName="transport"
+          required
+        >
+          <option value="AIR">AIR</option>
+          <option value="ROAD">ROAD</option>
+          <option value="SEA">SEA</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-success me-2"
+        [disabled]="shipmentForm.invalid"
+      >
+        Update Shipment
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+        Cancel
+      </button>
+    </form>
+  </div>
+</div>

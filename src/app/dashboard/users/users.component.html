@@ -1,0 +1,62 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">User Details Management</h2>
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addUserModal"
+    >
+      + Add User
+    </button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>musharraf</td>
+        <td>musharraf#example.com</td>
+        <td>Mohamed</td>
+        <td>Musharraf</td>
+        <td>EXPORTER</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 🔹 Modal with Angular Component -->
+<div
+  class="modal fade"
+  id="addUserModal"
+  tabindex="-1"
+  aria-labelledby="addUserModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- 🔥 AddUsersComponent embedded here -->
+        <app-add-users></app-add-users>
+      </div>
+    </div>
+  </div>
+</div>

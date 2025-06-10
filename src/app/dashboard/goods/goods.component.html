@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <h3>All Goods</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Weight</th>
+        <th>Dimensions (L x W x H)</th>
+        <th>Amount</th>
+        <th>HS Code</th>
+        <th>Created By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let good of goodsList">
+        <td>{{ good.id }}</td>
+        <td>{{ good.name }}</td>
+        <td>{{ good.description }}</td>
+        <td>{{ good.quantity }}</td>
+        <td>{{ good.weight }}</td>
+        <td>{{ good.length }} x {{ good.width }} x {{ good.height }}</td>
+        <td>{{ good.amount | currency }}</td>
+        <td>{{ good.hsCode }}</td>
+        <td>{{ good.createdBy }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h3>Search HS Code by Commodity Name</h3>
+  <div class="mb-3">
+    <input
+      type="text"
+      [(ngModel)]="searchKeyword"
+      (input)="searchHsCode()"
+      placeholder="Enter commodity name"
+      class="form-control"
+    />
+  </div>
+
+  <div *ngIf="loading" class="text-info">Loading results...</div>
+
+  <table *ngIf="hsCodeResults.length > 0" class="table table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Code</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hsCode of hsCodeResults">
+        <td>{{ hsCode.commodity_code_short }}</td>
+        <td>{{ hsCode.section_code }}</td>
+        <td>{{ hsCode.commodity_code }}</td>
+        <td>{{ hsCode.commodity_fullname_english }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div
+    *ngIf="
+      !loading && hsCodeResults.length === 0 && searchKeyword.trim() !== ''
+    "
+    class="text-warning"
+  >
+    No HS Code results found.
+  </div>
+</div>

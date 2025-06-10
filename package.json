@@ -1,6 +1,12 @@
 {
   "name": "logistics-app",
   "version": "0.0.0",
+  "private": true,
+  "description": "This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +15,6 @@
     "test": "ng test",
     "serve:ssr:LogisticsApp": "node dist/logistics-app/server/server.mjs"
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
@@ -20,7 +25,11 @@
     "@angular/platform-server": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.0",
+    "bootstrap": "^5.3.6",
+    "bootstrap-icons": "^1.13.1",
+    "chart.js": "^4.4.9",
     "express": "^4.18.2",
+    "ng2-charts": "^4.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
